@@ -7,9 +7,9 @@ result1 = str1.find(":")
 result2 = str2.find(":")
 result3 = str3.find(":")
 
-number = (str1.index(":"))+1
-number2 = (str2.index(":"))+1
-number3 = (str3.index(":"))+1
+number = (str1.index(":")) + 1
+number2 = (str2.index(":")) + 1
+number3 = (str3.index(":")) + 1
 res = int(str1[number:]) + add_number
 res2 = int(str2[number2:]) + add_number
 res3 = int(str3[number3:]) + add_number
