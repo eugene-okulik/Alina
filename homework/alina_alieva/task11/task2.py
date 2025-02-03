@@ -26,12 +26,12 @@ class SchoolBook(Book):
                   f'предмет:{self.subject}, класс:{self.group}')
 
 
-school_book1 = SchoolBook('Математика на все века','Иванов','176',
-                          '12-прп','True','Математика','10','True')
-school_book2 = SchoolBook('История про историю','Петров','453',
-                          '34-рат','','История','7','False')
-school_book3 = SchoolBook('География для чайников','Сидоров','300',
-                          '567-ук','','География','8','True')
+school_book1 = SchoolBook('Математика на все века', 'Иванов', '176',
+                          '12-прп', 'True', 'Математика', '10', 'True')
+school_book2 = SchoolBook('История про историю', 'Петров', '453',
+                          '34-рат', '', 'История', '7', 'False')
+school_book3 = SchoolBook('География для чайников', 'Сидоров', '300',
+                          '567-ук', '', 'География', '8', 'True')
 
 school_book1.print_result()
 school_book2.print_result()
