@@ -16,7 +16,6 @@ class Lavanda(BotanicalFlower):
     color = 'blue'
 
 
-
 class Buket:
     list_flowers = []
 
@@ -33,8 +32,7 @@ class Buket:
         timeres = 0
         for flower in self.list_flowers:
             timeres += flower.life
-            result = timeres / len(self.list_flowers)
-        return result
+        return timeres / len(self.list_flowers)
 
     def sort_by(self, attribute):
         self.list_flowers.sort(key=lambda flower: getattr(flower, attribute))
@@ -50,13 +48,12 @@ class Buket:
 
 rosa = Rosa("Rose", 1, 3, 'True', 'red', 30)
 rosa2 = Rosa("Rosa Peon", 3, 3, 'red', 'red', 15)
-lavanda = Lavanda("Lavanda",2, 2, 'blue', 'red', 1)
+lavanda = Lavanda("Lavanda", 2, 2, 'blue', 'red', 1)
 
 rBuket = Buket()
 rBuket.add_flower(rosa)
 rBuket.add_flower(rosa2)
 rBuket.add_flower(lavanda)
-
 
 print(rBuket.price())
 print(rBuket.lifetime())
