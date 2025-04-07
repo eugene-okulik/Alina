@@ -7,7 +7,7 @@ def line_action(line):
     if data:
         number = data.group(1)
         day = data.group(2)
-        action = data.group(3)
+        # action = data.group(3)
         date_two_obj = datetime.strptime(day, "%Y-%m-%d %H:%M:%S.%f")
         if number == "1":
             new_date = date_two_obj + timedelta(days=7)
