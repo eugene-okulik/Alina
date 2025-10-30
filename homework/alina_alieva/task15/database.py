@@ -19,7 +19,7 @@ cursor.executemany(
     "INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)", books
 )
 db.commit()
-cursor.execute(f"SELECT * FROM books LIMIT 5")
+cursor.execute("SELECT * FROM books LIMIT 5")
 all_books = cursor.fetchall()
 for book in all_books:
     print("All books:", book)
@@ -42,7 +42,7 @@ cursor.executemany(
     [("Subject for my test user Alina 2",), ("Subject Two for my test user Alina 3",)],
 )
 db.commit()
-cursor.execute(f"SELECT * FROM subjects")
+cursor.execute("SELECT * FROM subjects")
 subject = cursor.fetchall()
 for sub in subject:
     print(sub)
@@ -56,7 +56,7 @@ for subject_item in subject:
 cursor.executemany("INSERT INTO lessons (title, subject_id) VALUES (%s, %s)", lessons)
 db.commit()
 
-cursor.execute(f"SELECT * FROM lessons ORDER BY id DESC LIMIT 20")
+cursor.execute("SELECT * FROM lessons ORDER BY id DESC LIMIT 20")
 created_lessons = cursor.fetchall()
 
 print("Lessons:")
@@ -83,13 +83,13 @@ print("All student marks:")
 for mark in student_marks:
     print(mark)
 
-cursor.execute(f"SELECT * FROM books WHERE taken_by_student_id = %s", (student_id,))
+cursor.execute("SELECT * FROM books WHERE taken_by_student_id = %s", (student_id,))
 student_books = cursor.fetchall()
 for book in student_books:
     print(book)
 
 query = f"""
-SELECT 
+SELECT
     s.id AS student_id,
     s.name,
     s.second_name,
