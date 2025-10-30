@@ -1,11 +1,11 @@
 import mysql.connector as mysql
 
 db = mysql.connect(
-    user='st-onl',
-    passwd='AVNS_tegPDkI5BlB2lW5eASC',
-    host='db-mysql-fra1-09136-do-user-7651996-0.b.db.ondigitalocean.com',
+    user="st-onl",
+    passwd="AVNS_tegPDkI5BlB2lW5eASC",
+    host="db-mysql-fra1-09136-do-user-7651996-0.b.db.ondigitalocean.com",
     port=25060,
-    database='st-onl'
+    database="st-onl",
 )
 cursor = db.cursor(dictionary=True)
 cursor.execute("INSERT INTO students (name, second_name) VALUES ('New', 'Student')")
@@ -14,20 +14,20 @@ cursor.execute(f"SELECT * FROM students where id = {student_id}")
 new_student = cursor.fetchone()
 print(new_student)
 
-books = [
-    ('Book1', student_id),
-    ('Book2', student_id),
-    ('Book3', student_id)
-]
-cursor.executemany("INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)", books)
+books = [("Book1", student_id), ("Book2", student_id), ("Book3", student_id)]
+cursor.executemany(
+    "INSERT INTO books (title, taken_by_student_id) VALUES (%s, %s)", books
+)
 db.commit()
 cursor.execute(f"SELECT * FROM books LIMIT 5")
 all_books = cursor.fetchall()
 for book in all_books:
     print("All books:", book)
 
-cursor.execute("INSERT INTO `groups` (title, start_date, end_date) VALUES (%s, %s, %s)",
-               ('NEW alina group test 2', '2025-10-25', '2025-12-25'))
+cursor.execute(
+    "INSERT INTO `groups` (title, start_date, end_date) VALUES (%s, %s, %s)",
+    ("NEW alina group test 2", "2025-10-25", "2025-12-25"),
+)
 db.commit()
 group_id = cursor.lastrowid
 cursor.execute(f"SELECT * FROM `groups` WHERE id = {group_id}")
@@ -37,14 +37,10 @@ cursor.execute(f"UPDATE students SET group_id = {group_id} WHERE id = {student_i
 db.commit()
 print(f"{student_id} {group_id}")
 
-cursor.executemany("INSERT INTO subjects (title) VALUES (%s)",
-                   [
-
-                       ('Subject for my test user Alina 2',),
-                       ('Subject Two for my test user Alina 3',)
-
-                   ]
-                   )
+cursor.executemany(
+    "INSERT INTO subjects (title) VALUES (%s)",
+    [("Subject for my test user Alina 2",), ("Subject Two for my test user Alina 3",)],
+)
 db.commit()
 cursor.execute(f"SELECT * FROM subjects")
 subject = cursor.fetchall()
@@ -53,14 +49,11 @@ for sub in subject:
 
 lessons = []
 for subject_item in subject:
-    subject_id = subject_item['id']
-    subject_title = subject_item['title']
+    subject_id = subject_item["id"]
+    subject_title = subject_item["title"]
     lessons.append((f"{subject_title} Lesson 1", subject_id))
     lessons.append((f"{subject_title} Lesson 2", subject_id))
-cursor.executemany(
-    "INSERT INTO lessons (title, subject_id) VALUES (%s, %s)",
-    lessons
-)
+cursor.executemany("INSERT INTO lessons (title, subject_id) VALUES (%s, %s)", lessons)
 db.commit()
 
 cursor.execute(f"SELECT * FROM lessons ORDER BY id DESC LIMIT 20")
@@ -70,19 +63,17 @@ print("Lessons:")
 
 marks = []
 for lesson in created_lessons:
-    lesson_id = lesson['id']
+    lesson_id = lesson["id"]
     value = 7
     marks.append((student_id, lesson_id, value))
     print(lesson)
 cursor.executemany(
-    "INSERT INTO marks (student_id, lesson_id, value) VALUES (%s, %s, %s)",
-    marks
+    "INSERT INTO marks (student_id, lesson_id, value) VALUES (%s, %s, %s)", marks
 )
 db.commit()
 
 cursor.execute(
-    "SELECT * FROM marks WHERE student_id = %s ORDER BY id DESC LIMIT 5",
-    (student_id,)
+    "SELECT * FROM marks WHERE student_id = %s ORDER BY id DESC LIMIT 5", (student_id,)
 )
 print(cursor.fetchall())
 
