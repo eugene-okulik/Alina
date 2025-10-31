@@ -76,9 +76,9 @@ marks = []
 for lesson_id in lessons_ids:
     value = 7
     cursor.execute(
-        f"INSERT INTO marks (student_id, lesson_id, value) VALUES (%s, %s, %s)",
+        "INSERT INTO marks (student_id, lesson_id, value) VALUES (%s, %s, %s)",
         (student_id, lesson_id, value)
-        )
+    )
     db.commit()
     marks.append((lesson_id, value))
 
