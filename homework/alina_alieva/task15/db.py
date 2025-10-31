@@ -10,7 +10,7 @@ db = mysql.connect(
 cursor = db.cursor(dictionary=True)
 cursor.execute("INSERT INTO students (name, second_name) VALUES ('New', 'Student')")
 student_id = cursor.lastrowid
-cursor.execute(f"SELECT * FROM students where id = {student_id}")
+cursor.execute("SELECT * FROM students where id = %s", (student_id,))
 new_student = cursor.fetchone()
 print(new_student)
 
@@ -30,54 +30,64 @@ cursor.execute(
 )
 db.commit()
 group_id = cursor.lastrowid
-cursor.execute(f"SELECT * FROM `groups` WHERE id = {group_id}")
+cursor.execute("SELECT * FROM `groups` WHERE id = %s", (group_id,))
 group = cursor.fetchone()
 print(group)
-cursor.execute(f"UPDATE students SET group_id = {group_id} WHERE id = {student_id}")
+
+cursor.execute("UPDATE students SET group_id = %s WHERE id = %s",
+               (group_id, student_id,))
 db.commit()
 print(f"{student_id} {group_id}")
 
-cursor.executemany(
-    "INSERT INTO subjects (title) VALUES (%s)",
-    [("Subject for my test user Alina 2",), ("Subject Two for my test user Alina 3",)],
-)
-db.commit()
-cursor.execute("SELECT * FROM subjects")
-subject = cursor.fetchall()
-for sub in subject:
-    print(sub)
+subject_to_add = [
+    "Subject for my test user Alina 2",
+    "Subject Two for my test user Alina 3"
+]
+subject_ids = []
+for title in subject_to_add:
+    cursor.execute("INSERT INTO subjects (title) VALUES (%s)", (title,))
+    db.commit()
+    subject_ids.append(cursor.lastrowid)
+print("Subjects ------:")
+for title, sid in zip(subject_to_add, subject_ids):
+    print(sid)
 
-lessons = []
-for subject_item in subject:
-    subject_id = subject_item["id"]
-    subject_title = subject_item["title"]
-    lessons.append((f"{subject_title} Lesson 1", subject_id))
-    lessons.append((f"{subject_title} Lesson 2", subject_id))
-cursor.executemany("INSERT INTO lessons (title, subject_id) VALUES (%s, %s)", lessons)
-db.commit()
+lesson_to_add = [
+    ("Lesson A", 0),
+    ("Lesson B", 0),
+    ("Lesson C", 1),
+    ("Lesson D", 1),
+]
 
-cursor.execute("SELECT * FROM lessons ORDER BY id DESC LIMIT 20")
-created_lessons = cursor.fetchall()
-
-print("Lessons:")
+lessons_ids = []
+for lesson_title, subj_index in lesson_to_add:
+    subject_id = subject_ids[subj_index]
+    cursor.execute(
+        "INSERT INTO lessons (title, subject_id) VALUES (%s, %s)",
+        (lesson_title, subject_id)
+    )
+    db.commit()
+    lessons_ids.append(cursor.lastrowid)
+print("Lessons ----")
+for lid in lessons_ids:
+    print(lid)
 
 marks = []
-for lesson in created_lessons:
-    lesson_id = lesson["id"]
+for lesson_id in lessons_ids:
     value = 7
-    marks.append((student_id, lesson_id, value))
-    print(lesson)
-cursor.executemany(
-    "INSERT INTO marks (student_id, lesson_id, value) VALUES (%s, %s, %s)", marks
-)
-db.commit()
+    cursor.execute(
+        f"INSERT INTO marks (student_id, lesson_id, value) VALUES (%s, %s, %s)",
+        (student_id, lesson_id, value)
+        )
+    db.commit()
+    marks.append((lesson_id, value))
 
-cursor.execute(
-    "SELECT * FROM marks WHERE student_id = %s ORDER BY id DESC LIMIT 5", (student_id,)
-)
-print(cursor.fetchall())
+print("Marks ------")
+for lesson_id, value in marks:
+    print({lesson_id}, {value})
 
-cursor.execute(f"SELECT * FROM marks WHERE student_id = {student_id}")
+
+cursor.execute("SELECT * FROM marks WHERE student_id = %s", (student_id,))
 student_marks = cursor.fetchall()
 print("All student marks:")
 for mark in student_marks:
@@ -88,7 +98,7 @@ student_books = cursor.fetchall()
 for book in student_books:
     print(book)
 
-query = f"""
+query = """
 SELECT
     s.id AS student_id,
     s.name,
@@ -104,10 +114,10 @@ LEFT JOIN books b ON b.taken_by_student_id = s.id
 LEFT JOIN marks m ON m.student_id = s.id
 LEFT JOIN lessons l ON m.lesson_id = l.id
 LEFT JOIN subjects subj ON l.subject_id = subj.id
-WHERE s.id = {student_id}
+WHERE s.id = %s
 ORDER BY subj.id, l.id;
 """
-cursor.execute(query)
+cursor.execute(query, (student_id,))
 student_full_info = cursor.fetchall()
 
 print("\n--- FULL STUDENT INFO ---")
