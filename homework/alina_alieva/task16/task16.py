@@ -2,6 +2,8 @@ import csv
 import os
 import mysql.connector as mysql
 from dotenv import load_dotenv
+from pathlib import Path
+
 
 load_dotenv()
 
@@ -20,11 +22,13 @@ connection = mysql.connect(
 )
 cursor = connection.cursor()
 
-csv_path = "/Users/aalieva/Alina/homework/eugene_okulik/Lesson_16/hw_data/data.csv"
+csv_path = os.path.dirname(__file__)
+file_path = os.path.join(csv_path, '..', '..', 'eugene_okulik', 'Lesson_16', 'hw_data', 'data.csv')
+file_path = os.path.normpath(file_path)
 
 missing_rows = []
 
-with open(csv_path, newline='', encoding='utf-8') as csvfile:
+with open(file_path, newline='', encoding='utf-8') as csvfile:
     reader = csv.DictReader(csvfile)
 
     for row in reader:
