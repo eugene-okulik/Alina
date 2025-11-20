@@ -4,12 +4,12 @@ import os
 
 def is_block_start(line):
     return (
-            len(line) > 19 and
-            line[0:4].isdigit() and
-            line[4] == '-' and
-            line[5:7].isdigit() and
-            line[7] == '-' and
-            line[8:10].isdigit()
+            len(line) > 19
+            and line[0:4].isdigit()
+            and line[4] == '-'
+            and line[5:7].isdigit()
+            and line[7] == '-'
+            and line[8:10].isdigit()
     )
 
 
@@ -76,8 +76,8 @@ for block in files:
     if current_block:
         blocks.append(current_block)
 
-    for block in blocks:
-        block_text = "".join(block)
+    for block_l in blocks:
+        block_text = "".join(block_l)
         if search_text in block_text:
             print("\n--- block of the text ---")
             print(block_text[:500], "...")
