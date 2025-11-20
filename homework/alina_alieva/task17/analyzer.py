@@ -4,12 +4,12 @@ import os
 
 def is_block_start(line):
     return (
-            len(line) > 19
-            and line[0:4].isdigit()
-            and line[4] == '-'
-            and line[5:7].isdigit()
-            and line[7] == '-'
-            and line[8:10].isdigit()
+        len(line) > 19
+        and line[0:4].isdigit()
+        and line[4] == '-'
+        and line[5:7].isdigit()
+        and line[7] == '-'
+        and line[8:10].isdigit()
     )
 
 
