@@ -40,7 +40,7 @@ def new_object():
 
 
 def clear(pre_cond):
-    response_delete = requests.delete(f'http://objapi.course.qa-practice.com/object/{pre_cond}')
+    _ = requests.delete(f'http://objapi.course.qa-practice.com/object/{pre_cond}')
 
 
 def edit_all_object():
