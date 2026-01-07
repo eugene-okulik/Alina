@@ -50,7 +50,9 @@ def text_after_each_test():
 @pytest.mark.critical
 def test_get_one_object(pre_cond_new_object_id_without_del, text_title):
     with allure.step(f'Run query for getting object id{pre_cond_new_object_id_without_del}'):
-        response = requests.get(f'http://objapi.course.qa-practice.com/object/{pre_cond_new_object_id_without_del}').json()
+        response = requests.get(
+            f'http://objapi.course.qa-practice.com/object/{pre_cond_new_object_id_without_del}'
+        ).json()
     with allure.step('Check id is match with id = 1'):
         assert response["id"] == {1}
 
